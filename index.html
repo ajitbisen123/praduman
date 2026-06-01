@@ -147,16 +147,31 @@ body::before {
 }
 .btn-s:hover { border-color: var(--a2); color: var(--a2); transform: translateY(-3px); }
 
+/* Global Base CTA Buttons */
+.cta-btns { 
+  display: flex; 
+  flex-wrap: wrap;
+  gap: 15px; 
+  margin-top: 10px; 
+  width: 100%;
+}
+
+/* Footer Specific Center Alignment */
+.cta-wrap .cta-btns {
+  justify-content: center;
+}
+
 @media (max-width: 600px) {
   .cta-btns {
     flex-direction: column !important;
     align-items: stretch !important;
-    gap: 15px !important;
+    gap: 20px !important; /* Increased gap to prevent misclick overlap */
     width: 100% !important;
   }
   .cta-btns .btn-p, .cta-btns .btn-s {
     width: 100%;
     margin: 0;
+    padding: 16px 30px; /* Better tap target */
   }
 }
 
@@ -205,11 +220,9 @@ body::before {
    ============================================================ */
 #hero-section {
   position: relative; 
-  /* Reduced padding drastically to fix massive gaps */
   padding: 120px 5% 40px; 
   display: flex; align-items: center; justify-content: center;
   background: #05070a; overflow: hidden; color: #fff;
-  /* Removed min-height so it shrinks to fit content */
 }
 #hero-section::before {
   content: ''; position: absolute; top: 30%; right: 15%; left: auto;
@@ -219,14 +232,19 @@ body::before {
 }
 
 .hero-container {
-  display: flex; flex-direction: row; align-items: center; justify-content: center;
-  gap: 30px; /* Tighter gap between text and orbit */
+  display: flex; flex-direction: row; align-items: center; justify-content: space-between;
+  gap: 30px; 
   max-width: 1200px; width: 100%; position: relative; z-index: 2; margin: 0 auto;
 }
 
 .hero-content { 
   flex: 1; max-width: 550px; display: flex; flex-direction: column; gap: 15px; 
   align-items: flex-start;
+}
+
+/* FIX: Ensure Hero Buttons stay left-aligned on Desktop */
+.hero-content .cta-btns {
+  justify-content: flex-start;
 }
 
 .badge {
@@ -236,9 +254,8 @@ body::before {
   font-size: clamp(10px, 2vw, 11px); letter-spacing: 2px; text-transform: uppercase; color: #d4ff00; width: fit-content;
 }
 
-/* FIXED NAME: Much smaller max size to stop orbit overlap */
 .hero-name { 
-  font-size: clamp(2rem, 4vw, 3.2rem); /* Significantly reduced from 4.5rem to 3.2rem max */
+  font-size: clamp(2rem, 4vw, 3.2rem); 
   font-weight: 900; line-height: 1; letter-spacing: 1px; margin: 10px 0; 
   white-space: nowrap; 
 }
@@ -247,38 +264,35 @@ body::before {
 .changing-text-wrapper { font-size: clamp(1.2rem, 3.5vw, 1.6rem); font-weight: 700; color: #fff; height: 40px; margin-bottom: 5px; }
 #changing-word { color: #d4ff00; text-transform: uppercase; border-right: 3px solid #d4ff00; padding-right: 5px; }
 
-.cta-btns { 
-  display: flex; 
-  flex-wrap: wrap;
-  gap: 15px; 
-  margin-top: 10px; 
-  width: 100%;
-}
-
 .hero-visual { flex: 1; display: flex; justify-content: center; align-items: center; width: 100%; }
+
+/* FIX: Orbit Shell Sizing */
 .orbit-shell {
-  position: relative; width: clamp(260px, 50vw, 400px); height: clamp(260px, 50vw, 400px); /* Slightly tighter orbit */
+  position: relative; width: clamp(280px, 40vw, 420px); height: clamp(280px, 40vw, 420px); 
   display: flex; align-items: center; justify-content: center;
 }
 
+/* FIX: Properly crop the profile image into the circle */
 .prof-center.profile-image-container {
-  width: clamp(90px, 20vw, 120px); 
-  height: clamp(90px, 20vw, 120px);
+  width: clamp(140px, 20vw, 200px); 
+  height: clamp(140px, 20vw, 200px);
   border-radius: 50%; 
   border: 2px solid rgba(212,255,0,.5);
   background: linear-gradient(180deg, #111, #05070a);
   display: flex; align-items: center; justify-content: center;
   position: relative; z-index: 30 !important;
   box-shadow: 0 0 40px rgba(212,255,0,.1);
+  overflow: hidden; /* Added to keep image perfectly inside the circle */
 }
 
+/* FIX: Image properties so it covers the container properly */
 .profile-image {
-  position: absolute; width: 190%; height: auto;
-  object-fit: contain; transform: scale(2);
+  width: 100%; height: 100%;
+  object-fit: cover; transform: scale(1); /* Reset from massive 190% */
   transition: transform 0.3s ease; z-index: 31;
 }
 
-.prof-center.profile-image-container:hover .profile-image { transform: scale(2.1); }
+.prof-center.profile-image-container:hover .profile-image { transform: scale(1.1); }
 
 .orbit-ring { position: absolute; border-radius: 50%; border: 1px solid rgba(255,255,255,.06); animation: spin linear infinite; z-index: 15; }
 .or1 { width: 70%; height: 70%; animation-duration: 25s; border-color: rgba(212,255,0,.15); }
@@ -299,13 +313,12 @@ body::before {
 @media (max-width: 992px) {
   .hero-container { flex-direction: column; text-align: center; gap: 40px; }
   .hero-content { align-items: center; text-align: center; } 
-  .hero-name { white-space: normal; } /* Allow wrap on tablets if necessary */
+  .hero-content .cta-btns { justify-content: center; } /* Center buttons on tablet/mobile */
+  .hero-name { white-space: normal; }
 }
 
 @media (max-width: 600px) {
   #hero-section { padding: 100px 5% 30px; }
-  .profile-image { transform: scale(1.3); }
-  .prof-center.profile-image-container:hover .profile-image { transform: scale(1.4); }
 }
 
 @media (max-width: 400px) {
@@ -493,10 +506,6 @@ body::before {
 
 .cta-sub { font-size: clamp(0.95rem, 2.5vw, 1.05rem); color: #aaa; margin: 0 auto 25px; max-width: 600px; line-height: 1.6; }
 
-.cta-btns { 
-  display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; width: 100%; 
-}
-
 @media (max-width: 768px) {
   .hide-mobile { display: none; }
 }
@@ -593,7 +602,6 @@ footer {
     <div class="hero-content">
       <div class="badge">● Available for Projects</div>
 
-      <!-- Ek line me naam aur strictly reduced font size taaki overlap na ho -->
       <h1 class="hero-name">
         <span class="n-white">PRADUMAN</span>
       </h1>
@@ -651,7 +659,6 @@ footer {
   </div>
 </section>
 
-<!-- ABOUT ME SECTION -->
 <section id="about" class="sec">
   <div class="wrap">
     <p class="sec-label rv">Who I Am</p>
